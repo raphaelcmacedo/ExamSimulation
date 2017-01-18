@@ -1,6 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 import answers.Palindrome;
 import org.junit.Test;

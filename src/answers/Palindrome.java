@@ -38,12 +38,7 @@ public class Palindrome {
 	public static boolean isInputValid(String text)
 	{
 		//Validates if the input is not null
-		if(text == null) {
-			return false;
-		}
-
-		//Validates if the input is not empty
-		if(text.isEmpty()){
+		if(text == null || text.isEmpty()) {
 			return false;
 		}
 		
