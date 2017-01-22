@@ -2,7 +2,7 @@ package answers;
 
 public class Palindrome {
 
-	//Performance: O(n)
+	//Complexity: O(n)
 	public static boolean isPalindrome(String text){
 		
 		//I decided to separate validation and processing in order to achieve greater cohesion  

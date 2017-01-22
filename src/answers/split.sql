@@ -1,10 +1,9 @@
-DROP PROCEDURE IF EXISTS splitted_table;
+DROP PROCEDURE IF EXISTS split_column;
 
 DELIMITER $$
 
--- Splits column value and add each splitted element as new
--- a new record to the table.
-CREATE PROCEDURE splitted_table(delimeter VARCHAR(255))
+
+CREATE PROCEDURE split_column(delimeter VARCHAR(255))
 
 BEGIN
 
@@ -24,7 +23,8 @@ BEGIN
 
     OPEN sourceTable;
 
-      read_loop: LOOP -- Read all the records from split and split columns with pipes.
+       -- Read all the records from split and split columns with pipes.
+      read_loop: LOOP 
 
         FETCH sourceTable INTO id, NAME;
 
@@ -46,7 +46,8 @@ BEGIN
                 SET i = i + 1;
 
             END WHILE;
-        ELSE -- The name has no piple so add it directly to the new table.
+        -- The name has no piple so add it directly to the new table.    
+        ELSE 
             INSERT INTO new_split VALUES (id, NAME);
         END IF;
 
@@ -60,4 +61,4 @@ $$
 
 DELIMITER ;
 
-CALL splitted_table('|');
+CALL split_column('|');

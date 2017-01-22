@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ComplementaryPairs {
+	
+	//Complexity: O(n^2)
 	public static int countComplementaryPairs(int[]A, int K){
 		if(!isInputValid(A)){
 			return 0;

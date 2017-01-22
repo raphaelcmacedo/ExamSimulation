@@ -1,35 +1,46 @@
-DROP PROCEDURE IF EXISTS search_bugs;
+DROP PROCEDURE IF EXISTS get_bugs;
 DELIMITER $$
 
-CREATE PROCEDURE search_bugs(startDate DATE, endDate DATE)
+CREATE PROCEDURE get_bugs(startDate DATE, endDate DATE)
+
+/*
+
+The function iterates over each date in the interval creating a query to obtain all the bugs on that specific day
+Concat the results of each query through UNION ALL
+
+*/
 
 BEGIN
+	
+	
+  DECLARE QUERY VARCHAR(1000);
+  DECLARE currentDate DATE;
 
-  DECLARE output VARCHAR(750);
-  DECLARE targetDate DATE;
-
-  SET output = '';
-  SET targetDate = startDate;
-
+  -- Variables used to concat the queries and iterate the dates
+  SET QUERY = '';
+  SET currentDate = startDate;
+  	
+  -- From the start date create 1 query per day	
   iterLoop: LOOP
+	
+	
+     IF currentDate = startDate THEN
 
-     IF targetDate = startDate THEN
+       SET QUERY = CONCAT(QUERY, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',currentDate,'\') AND close_date = DATE(\'',currentDate,'\') UNION ALL');
 
-       SET output = CONCAT(output, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',targetDate,'\') AND close_date = DATE(\'',targetDate,'\') UNION ALL');
+     ELSEIF currentDate = endDate THEN
 
-     ELSEIF targetDate = endDate THEN
-
-       SET output = CONCAT(output, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',targetDate,'\') AND close_date >= DATE(\'',targetDate,'\') UNION ALL');
+       SET QUERY = CONCAT(QUERY, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',currentDate,'\') AND close_date >= DATE(\'',currentDate,'\') UNION ALL');
 
      ELSE
 
-       SET output = CONCAT(output, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',targetDate,'\') AND close_date = DATE(\'',targetDate,'\') UNION ALL');
+       SET QUERY = CONCAT(QUERY, ' SELECT * FROM bugs WHERE open_date <= DATE(\'',currentDate,'\') AND close_date = DATE(\'',currentDate,'\') UNION ALL');
 
      END IF;
 
-     SET targetDate = DATE_ADD(targetDate, INTERVAL 1 DAY);
+     SET currentDate = DATE_ADD(currentDate, INTERVAL 1 DAY);
 
-     IF targetDate <= endDate THEN
+     IF currentDate <= endDate THEN
 
         ITERATE iterLoop;
 
@@ -38,15 +49,16 @@ BEGIN
      LEAVE iterLoop;
 
    END LOOP iterLoop;
-
-   SET output = LEFT(output, LENGTH(output)-LENGTH('UNION ALL'));
-
-   PREPARE  statement FROM @output;
+   
+   -- Format the prepared statement
+   SET @query = LEFT(QUERY, LENGTH(QUERY)-LENGTH('UNION ALL'));
+	
+   PREPARE statement FROM @query;
    EXECUTE statement;
-
 END;
 $$
 
 DELIMITER ;
 
-CALL search_bugs(STR_TO_DATE('2015-11-10', '%Y-%m-%d'), STR_TO_DATE('2015-11-03', '%Y-%m-%d'));
+-- Run a query test
+CALL get_bugs('2017-01-01','2017-01-05');

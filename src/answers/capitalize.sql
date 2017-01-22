@@ -1,22 +1,24 @@
-ROP FUNCTION IF EXISTS CAP_FIRST_CHAR;
+DROP FUNCTION IF EXISTS CAPITALIZE_FIRST;
 
 DELIMITER $$
 
-CREATE FUNCTION CAP_FIRST_CHAR(input VARCHAR(250))
+CREATE FUNCTION CAPITALIZE_FIRST(input VARCHAR(250))
   RETURNS VARCHAR(250) DETERMINISTIC
 
 BEGIN
 
-  DECLARE output VARCHAR(250);  -- Holds the final capitalised value.
-  DECLARE prevChar VARCHAR(1);  -- Holds the previous character in the loop.
-  DECLARE curChar VARCHAR(1);   -- Holds the current character in the loop.
-  DECLARE ctr INT;              -- The index of the character in the loop.
+  -- Declare the variables to control the loop and captalize just the first letter in the word
+  DECLARE output VARCHAR(250);  
+  DECLARE prevChar VARCHAR(1);  
+  DECLARE curChar VARCHAR(1);   
+  DECLARE ctr INT;              
 
   SET output = UCASE(LEFT(input, 1));
   SET ctr=1;
   SET prevChar = SUBSTRING(input, ctr, 1);
   SET curChar = "";
 
+  -- Iterates the input looking for the first letter based on the start of the string or the ' ' between the words
   elementLoop: LOOP
     SET ctr = ctr + 1;
     SET curChar = SUBSTRING(input, ctr, 1);
@@ -42,4 +44,4 @@ END;
 $$
 DELIMITER ;
 
-SELECT CAP_FIRST_CHAR(NAME) FROM countries;
+SELECT CAPITALIZE_FIRST(NAME) FROM countries;
