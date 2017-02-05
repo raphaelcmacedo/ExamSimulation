@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * Write an efficient algorithm to find K-complementary pairs in a given array of integers. 
+ * Given Array A, pair (i, j) is K- complementary if K = A[i] + A[j];
+ *
+ */
+
 public class ComplementaryPairs {
 	
 	//Complexity: O(n^2)
@@ -26,7 +33,7 @@ public class ComplementaryPairs {
 			values.put(key, occurrences);
 		}
 		
-		//Now we run for each value found on the array
+		//Now run each value found on the array
 		//calculate the value that we need to reach K. For example if the value found is 1 and K is 10 we need 10-1 = 9
 		//We need to consider how many times this value appears on the array.
 		//We also need to handle the counterpart already evaluated assuming that the pairs = {9,1} and {1,9} are the same pair.

@@ -23,7 +23,6 @@ public class TopPhrasesTest extends TestCase {
 		expected.put("Microsoft Bing", 1);
 		expected.put("Microsoft", 1);
 		expected.put("Rio Olympics", 1);
-		expected.put("WalletHub", 1);
 		expected.put("Baz", 1);
 		expected.put("Amazon", 1);
 		expected.put("Overflow", 1);

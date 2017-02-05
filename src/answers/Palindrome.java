@@ -1,31 +1,35 @@
 package answers;
 
+/**
+ * Question
+ * 
+ * Write an efficient algorithm to check if a string is a palindrome. 
+ * A string is a palindrome if the string matches the reverse of string. Example: 1221 is a palindrome but not 1121.
+ *
+ */
+
 public class Palindrome {
 
 	//Complexity: O(n)
 	public static boolean isPalindrome(String text){
 		
-		//I decided to separate validation and processing in order to achieve greater cohesion  
 		if(!isInputValid(text)){
 			return false;
 		}
 		
-		//I declare the first and last index of the string in order to compare them to each interaction, 
+		//Declare the first and last index of the string in order to compare them to each interaction, 
 		//so that the first index always increases and the last always decreases. 
 		//That way I can get each pair correctly 
 		int startIndex = 0;
 		int endIndex = text.length() - 1;
 		
 		while (startIndex < endIndex) {
-			//I separate the values obtained from this interaction and compare the chars. 
-			//It would be possible to make this comparison in less lines of code, 
-			//but I believe this way the code became more readable
+			//Separate the values obtained from this interaction and compare the chars. 
 			char startChar = text.charAt(startIndex);
 			char endChar = text.charAt(endIndex);
 			if (startChar != endChar) {
 				return false;
 			}
-			//As stated above, I make the necessary increases and decrements
 			startIndex++;
 			endIndex--;
 		}
